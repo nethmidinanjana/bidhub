@@ -8,7 +8,6 @@ A full-featured enterprise-grade **online bidding system** built using **Java EE
 
 - **Java EE** (JSP, Servlets, EJB, JMS, JPA)  
 - **Payara** Application Server  
-- **MySQL** Database  
 - **JMS** (Java Message Service) for event-driven messaging  
 - **Maven** for project management  
 - **EAR** packaging structure (Core, Web, EJB, EAR modules)
@@ -30,7 +29,6 @@ A full-featured enterprise-grade **online bidding system** built using **Java EE
 - Browse items & place bids  
 - Countdown timer for each item  
 - Background auction handling with EJB timers / JMS  
-- Admin module for item management  
 
 ---
 
@@ -38,8 +36,7 @@ A full-featured enterprise-grade **online bidding system** built using **Java EE
 
 1. Clone the repository  
 2. Import the project into NetBeans or IntelliJ as a Maven EAR project  
-3. Configure your MySQL database connection  
-4. Deploy the EAR to GlassFish Server  
+3. Deploy the EAR to GlassFish Server  
 
 ---
 
