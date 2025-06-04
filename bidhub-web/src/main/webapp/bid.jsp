@@ -2,6 +2,13 @@
 <%@ page import="lk.nd.bidhub.model.AuctionItem" %>
 <%@ page import="lk.nd.bidhub.beans.AuctionManagerBean" %>
 <%@ page import="java.text.NumberFormat" %>
+<%@ page import="lk.nd.bidhub.dto.BidMessage" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.TimeZone" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDateTime" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,8 +82,38 @@
         <div class="recent-bids">
             <h2>Recent Bids</h2>
             <div class="bid-history" id="bid-history-container">
+                <%
+                    List<BidMessage> bids = item.getBids();
+                    java.text.NumberFormat formatter = java.text.NumberFormat.getInstance(new java.util.Locale("en", "IN"));
+                    for (int i = bids.size() - 1; i >= 0; i--) {
+                        BidMessage bid = bids.get(i);
+                        String username = bid.getBidderEmail().split("@")[0];
+                        double amount = bid.getAmount();
 
+                        String formattedTime = bid.getTimestamp(); // fallback
+                        try {
+                            java.time.format.DateTimeFormatter inputFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+                            java.time.LocalDateTime ldt = java.time.LocalDateTime.parse(bid.getTimestamp(), inputFormatter);
+                            java.time.format.DateTimeFormatter outputFormatter = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm a");
+                            formattedTime = ldt.format(outputFormatter);
+                        } catch (Exception e) {}
+
+                %>
+                <div class="bid-entry">
+                    <span class="bidder"><%= username %></span>
+                    <span class="bid-amount">Rs. <%= formatter.format(amount) %>.00</span>
+                    <span class="bid-time"><%= formattedTime %></span>
+                </div>
+                <%
+                    }
+                    if (bids.isEmpty()) {
+                %>
+                <div class="bid-entry" id="no-bids">No bids yet.</div>
+                <%
+                    }
+                %>
             </div>
+
         </div>
 
         <%

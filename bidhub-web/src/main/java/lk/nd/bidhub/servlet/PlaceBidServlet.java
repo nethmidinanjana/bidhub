@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.nd.bidhub.beans.AuctionManagerBean;
 import lk.nd.bidhub.dto.BidMessage;
 import lk.nd.bidhub.jms.BidMessageProducer;
+import lk.nd.bidhub.model.AuctionItem;
 import lk.nd.bidhub.model.User;
 
 import java.io.IOException;

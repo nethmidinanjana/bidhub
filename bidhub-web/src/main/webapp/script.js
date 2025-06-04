@@ -90,6 +90,10 @@ const ws = new WebSocket("ws://localhost:8080/bidhub-app/live-bids");
 ws.onmessage = function (event){
     const bid = JSON.parse(event.data);
 
+    const currentBid = document.getElementById("current-bid");
+    const bidAmount = document.getElementById("bid-amount");
+    const noBids = document.getElementById("no-bids");
+
     console.log("Live bid: ", bid);
 
     const trimmedTimestamp = bid.timestamp.slice(0, 23);
@@ -98,13 +102,20 @@ ws.onmessage = function (event){
         timeStyle: "short"
     })
 
+    if(noBids){
+        noBids.remove();
+    }
+
     const bidEntry = document.createElement("div");
     bidEntry.className = "bid-entry";
     bidEntry.innerHTML = `
     <span class="bidder">${bid.bidderEmail.split('@')[0]}</span>
-    <span class="bid-amount">Rs. ${bid.amount.toLocaleString()}</span>
+    <span class="bid-amount">Rs. ${bid.amount.toLocaleString()}.00</span>
     <span class="bid-time">${formattedTime}</span>
     `;
+
+    currentBid.innerHTML = "Rs. "+bid.amount.toLocaleString()+".00";
+    bidAmount.min = bid.amount + 1;
 
     const container = document.querySelector(".bid-history");
     container.prepend(bidEntry);

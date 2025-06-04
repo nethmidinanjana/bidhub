@@ -7,7 +7,6 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import lk.nd.bidhub.dto.BidMessage;
-import lk.nd.bidhub.interfaces.BidBroadcaster;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
