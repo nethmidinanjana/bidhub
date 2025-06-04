@@ -55,11 +55,29 @@
                         <span class="amount" id="current-bid">Rs. <%=
                         fomatter.format(item.getCurrentBid()) %>.00</span>
                     </div>
-                    
-                    <div class="countdown" data-end-time="<%= item.getEndDateTime().toString() %>">
+
+                    <%
+                        List<BidMessage> bidMessageList = item.getBids();
+                        BidMessage highestBid = null;
+                        for(BidMessage bid: bidMessageList){
+                            if(highestBid == null || bid.getAmount() > highestBid.getAmount()){
+                                highestBid = bid;
+                            }
+                        }
+
+                        boolean isExpired = item.getEndDateTime().isBefore(LocalDateTime.now());
+                        String winner = highestBid != null ? "Winner is "+highestBid.getBidderEmail().split("@")[0] : "No bids";
+                    %>
+
+                    <% if (isExpired) { %>
+                    <p class="countdown"><span class="time">Expired. <%= winner %></span></p>
+                    <% } else { %>
+                    <p class="countdown" data-end-time="<%= item.getEndDateTime().toString() %>">
                         <span class="label">Time Remaining:</span>
                         <span class="time"></span>
-                    </div>
+                    </p>
+                    <% } %>
+
                 </div>
 
                 <div id="bidForm" class="bid-form">
@@ -90,7 +108,7 @@
                         String username = bid.getBidderEmail().split("@")[0];
                         double amount = bid.getAmount();
 
-                        String formattedTime = bid.getTimestamp(); // fallback
+                        String formattedTime = bid.getTimestamp();
                         try {
                             java.time.format.DateTimeFormatter inputFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
                             java.time.LocalDateTime ldt = java.time.LocalDateTime.parse(bid.getTimestamp(), inputFormatter);

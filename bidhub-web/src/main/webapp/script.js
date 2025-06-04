@@ -1,19 +1,18 @@
-function startCountDown(){
-    const countDownElements = document.querySelectorAll(".countdown");
+function startCountDown() {
+    const countDownElements = document.querySelectorAll(".countdown[data-end-time]");
 
     countDownElements.forEach(el => {
         const endTimeString = el.dataset.endTime;
         const countDownSpan = el.querySelector(".time");
-
         const endTime = new Date(endTimeString);
 
-        function updateCountDown(){
+        function updateCountDown() {
             const now = new Date();
             const timeDiff = endTime - now;
 
-            if(timeDiff <= 0){
-                countDownSpan.textContent = "Expired.";
+            if (timeDiff <= 0) {
                 clearInterval(timer);
+                window.location.reload();
                 return;
             }
 
@@ -23,15 +22,17 @@ function startCountDown(){
             const minutes = Math.floor((seconds % 3600) / 60);
             const secs = seconds % 60;
 
-            countDownSpan.textContent = days + " days " + hours + " hours " + minutes + " minutes " + secs + " seconds.";
+            countDownSpan.textContent =
+                days + " days " + hours + " hours " + minutes + " minutes " + secs + " seconds.";
         }
 
         updateCountDown();
         const timer = setInterval(updateCountDown, 1000);
-    })
+    });
 }
 
 window.addEventListener("DOMContentLoaded", startCountDown);
+
 
 function formatTimeAgo(dateString) {
     const now = new Date();

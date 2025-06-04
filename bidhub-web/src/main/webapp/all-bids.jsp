@@ -18,10 +18,10 @@
     <div class="container">
         
         <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search auctions...">
-            <button class="search-button">Search</button>
-        </div>
+<%--        <div class="search-container">--%>
+<%--            <input type="text" class="search-input" placeholder="Search auctions...">--%>
+<%--            <button class="search-button">Search</button>--%>
+<%--        </div>--%>
         
         <!-- Auction Grid -->
         <div class="auction-grid">

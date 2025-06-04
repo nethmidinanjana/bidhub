@@ -4,6 +4,7 @@
 <%@ page import="java.util.Comparator" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="lk.nd.bidhub.beans.AuctionManagerBean" %>
+<%@ page import="java.time.LocalDateTime" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,24 +35,37 @@
                     AuctionManagerBean auctionManagerBean = (AuctionManagerBean) application.getAttribute("auctionManager");
                     List<AuctionItem> items = auctionManagerBean.getAuctionItems();
 
-                    List<AuctionItem> featuredItems = new ArrayList<>();
-                    if(items != null && items.size() >= 3){
-                        items.sort(Comparator.comparing(AuctionItem::getEndDateTime));
-                        featuredItems = items.subList(0, 3);
-                    }
+                    List<AuctionItem> activeItems = new ArrayList<>();
+                    LocalDateTime now = LocalDateTime.now();
 
-                    for(AuctionItem item: featuredItems){
-                        NumberFormat formatter = NumberFormat.getInstance();
-                        %>
-                            <div class="auction-card">
-                                <img src="<%= item.getImageUrl() %>" alt="Vintage Watch" class="auction-image">
-                                <div class="auction-info">
-                                    <h3><%= item.getTitle() %></h3>
-                                    <p class="current-bid">Current Bid: Rs. <%= formatter.format(item.getCurrentBid())  %>.00 </p>
-                                    <a href="bid.jsp?id=<%= item.getId() %>" class="view-button">View</a>
+                    if(items != null){
+                        for (AuctionItem item: items){
+                            LocalDateTime endTime = item.getEndDateTime();
+                            if(endTime.isAfter(now)){
+                                activeItems.add(item);
+                            }
+                        }
+
+                        activeItems.sort(Comparator.comparing(AuctionItem::getEndDateTime));
+
+                        List<AuctionItem> featuredItems = activeItems.size() >= 3 ?
+                                activeItems.subList(0,3)
+                                : activeItems;
+
+
+                        for(AuctionItem item: featuredItems){
+                            NumberFormat formatter = NumberFormat.getInstance();
+                            %>
+                                <div class="auction-card">
+                                    <img src="<%= item.getImageUrl() %>" alt="Vintage Watch" class="auction-image">
+                                    <div class="auction-info">
+                                        <h3><%= item.getTitle() %></h3>
+                                        <p class="current-bid">Current Bid: Rs. <%= formatter.format(item.getCurrentBid())  %>.00 </p>
+                                        <a href="bid.jsp?id=<%= item.getId() %>" class="view-button">View</a>
+                                    </div>
                                 </div>
-                            </div>
-                        <%
+                            <%
+                        }
                     }
                 %>
             </div>
