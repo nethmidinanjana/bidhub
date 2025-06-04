@@ -45,7 +45,7 @@
                 <div class="bid-info">
                     <div class="current-bid-large">
                         <span class="label">Current Highest Bid:</span>
-                        <span class="amount">Rs. <%=
+                        <span class="amount" id="current-bid">Rs. <%=
                         fomatter.format(item.getCurrentBid()) %>.00</span>
                     </div>
                     
@@ -54,48 +54,28 @@
                         <span class="time"></span>
                     </div>
                 </div>
-                
-                <div class="bid-form">
+
+                <div id="bidForm" class="bid-form">
                     <label for="bid-amount">Your Bid Amount:</label>
                     <div class="bid-input-group">
-                        <span class="currency">$</span>
-                        <input type="number" id="bid-amount" class="bid-input" placeholder="2500" min="2451">
-                        <button class="submit-bid-button">Place Bid</button>
+                        <span class="currency">Rs.</span>
+                        <input type="number" id="bid-amount" name="bidAmount" class="bid-input"
+                               min="<%= item.getCurrentBid() + 1 %>" required>
+                        <button type="button" class="submit-bid-button" onclick="placeBid(<%= item.getId() %>)">Place Bid</button>
                     </div>
-                    <p class="min-bid-note">Minimum bid: $2,451</p>
+                    <p class="min-bid-note">
+                        Minimum bid: Rs. <%= fomatter.format(item.getCurrentBid()) %>.00
+                    </p>
                 </div>
+
             </div>
         </div>
         
         <!-- Recent Bids Section -->
         <div class="recent-bids">
             <h2>Recent Bids</h2>
-            <div class="bid-history">
-                <div class="bid-entry">
-                    <span class="bidder">john_collector</span>
-                    <span class="bid-amount">$2,450</span>
-                    <span class="bid-time">2 minutes ago</span>
-                </div>
-                <div class="bid-entry">
-                    <span class="bidder">watch_enthusiast</span>
-                    <span class="bid-amount">$2,400</span>
-                    <span class="bid-time">15 minutes ago</span>
-                </div>
-                <div class="bid-entry">
-                    <span class="bidder">vintage_lover</span>
-                    <span class="bid-amount">$2,350</span>
-                    <span class="bid-time">1 hour ago</span>
-                </div>
-                <div class="bid-entry">
-                    <span class="bidder">timepiece_pro</span>
-                    <span class="bid-amount">$2,300</span>
-                    <span class="bid-time">3 hours ago</span>
-                </div>
-                <div class="bid-entry">
-                    <span class="bidder">auction_master</span>
-                    <span class="bid-amount">$2,200</span>
-                    <span class="bid-time">1 day ago</span>
-                </div>
+            <div class="bid-history" id="bid-history-container">
+
             </div>
         </div>
 
@@ -111,41 +91,7 @@
     <!-- Include Footer -->
     <jsp:include page="footer.jsp" />
 
-    <script>
-        function startCountDown(){
-            const countDownElements = document.querySelectorAll(".countdown");
+    <script src="script.js"></script>
 
-            countDownElements.forEach(el => {
-                const endTimeString = el.dataset.endTime;
-                const countDownSpan = el.querySelector(".time");
-
-                const endTime = new Date(endTimeString);
-
-                function updateCountDown(){
-                    const now = new Date();
-                    const timeDiff = endTime - now;
-
-                    if(timeDiff <= 0){
-                        countDownSpan.textContent = "Expired.";
-                        clearInterval(timer);
-                        return;
-                    }
-
-                    const seconds = Math.floor(timeDiff / 1000);
-                    const days = Math.floor(seconds / (3600 * 24));
-                    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-                    const minutes = Math.floor((seconds % 3600) / 60);
-                    const secs = seconds % 60;
-
-                    countDownSpan.textContent = days + " days " + hours + " hours " + minutes + " minutes " + secs + " seconds.";
-                }
-
-                updateCountDown();
-                const timer = setInterval(updateCountDown, 1000);
-            })
-        }
-
-        window.addEventListener("DOMContentLoaded", startCountDown);
-    </script>
 </body>
 </html>

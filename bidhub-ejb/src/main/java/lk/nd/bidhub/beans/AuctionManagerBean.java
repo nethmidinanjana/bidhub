@@ -1,6 +1,7 @@
 package lk.nd.bidhub.beans;
 
 import jakarta.ejb.Stateless;
+import lk.nd.bidhub.dto.BidMessage;
 import lk.nd.bidhub.model.AuctionItem;
 
 import java.time.LocalDateTime;
@@ -31,11 +32,11 @@ public class AuctionManagerBean {
         return null;
     }
 
-    public boolean placeBid(String itemId, double bidAmount){
-        AuctionItem item = getAuctionItemById(itemId);
+    public boolean placeBid(BidMessage bid){
+        AuctionItem item = getAuctionItemById(bid.getItemId());
         if(item != null && LocalDateTime.now().isBefore(item.getEndDateTime())){
-            if(bidAmount > item.getCurrentBid()){
-                item.setCurrentBid(bidAmount);
+            if(bid.getAmount() > item.getCurrentBid()){
+                item.addBids(bid);
                 return true;
             }
         }

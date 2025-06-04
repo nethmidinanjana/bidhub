@@ -8,12 +8,12 @@ public class BidMessage implements Serializable {
     private String bidderEmail;
     private String itemId;
     private double amount;
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     public BidMessage() {
     }
 
-    public BidMessage(String bidderEmail, String itemId, double amount, LocalDateTime timestamp) {
+    public BidMessage(String bidderEmail, String itemId, double amount, String timestamp) {
         this.bidderEmail = bidderEmail;
         this.itemId = itemId;
         this.amount = amount;
@@ -44,11 +44,11 @@ public class BidMessage implements Serializable {
         this.amount = amount;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

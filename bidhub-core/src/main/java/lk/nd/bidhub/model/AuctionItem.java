@@ -1,7 +1,11 @@
 package lk.nd.bidhub.model;
 
+import lk.nd.bidhub.dto.BidMessage;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuctionItem implements Serializable {
     private String id;
@@ -11,6 +15,7 @@ public class AuctionItem implements Serializable {
     private double currentBid;
     private String imageUrl;
     private LocalDateTime endDateTime;
+    private final List<BidMessage> bids = new ArrayList<>();
 
     public AuctionItem() {
     }
@@ -23,6 +28,15 @@ public class AuctionItem implements Serializable {
         this.currentBid = currentBid;
         this.imageUrl = imageUrl;
         this.endDateTime = endDateTime;
+    }
+
+    public void addBids(BidMessage bidMessage){
+        this.currentBid = bidMessage.getAmount();
+        bids.add(bidMessage);
+    }
+
+    public List<BidMessage> getBids() {
+        return bids;
     }
 
     public String getId() {
